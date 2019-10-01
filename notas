@@ -30,13 +30,42 @@ void MallaInd::RandomVertices(){
 void MallaInd::ModoAjedrez(Tupla3f color1, Tupla3f color2){
 
    for(int i=0; i < vertices.size(); i++){
-
-      if(i%2==0)
-         col_ver.push_back(color1);
-      else
          col_ver.push_back(color2);
    }
 }
+
+
+
+adding new things:
+
+
+Tupla4f Objeto3D::leerFijarColVertsCauce( ContextoVis & cv )
+{
+   assert( cv.cauce_act != nullptr );
+
+   // leer color previo
+   Tupla4f color_previo = cv.cauce_act->leerColorActual();
+
+   if ( cv.modo_seleccion )
+   {
+      // modo seleccion: usar el identificador del objeto, si no es -1
+      const int ident_nodo = leerIdentificador();
+      if ( ident_nodo != -1 )
+         FijarColVertsIdent( *(cv.cauce_act), ident_nodo );
+   }
+   else
+   {
+      // modo dibujo: fijar el color si el objeto tiene color y está activada esta funcionalidad
+      if ( /**cv.fijar_colores_objetos &&**/ tieneColor() )
+         glColor3fv( leerColor() );
+   }
+
+   // devolver color previo
+   return color_previo ;
+}
+
+
+:
 
 
 
