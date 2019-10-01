@@ -43,7 +43,6 @@ Tupla4f Objeto3D::leerFijarColVertsCauce( ContextoVis & cv )
 {
    assert( cv.cauce_act != nullptr );
 
-   // leer color previo
    Tupla4f color_previo = cv.cauce_act->leerColorActual();
 
    if ( cv.modo_seleccion )
@@ -54,7 +53,6 @@ Tupla4f Objeto3D::leerFijarColVertsCauce( ContextoVis & cv )
          FijarColVertsIdent( *(cv.cauce_act), ident_nodo );
    }
 
-   // devolver color previo
    return color_previo ;
 }
 
@@ -71,10 +69,6 @@ Tupla4f Objeto3D::leerFijarColVertsCauce( ContextoVis & cv )
 MallaPLY::MallaPLY( const std::string & nombre_arch )
 {
    ponerNombre( std::string("malla leída del archivo '") + nombre_arch + "'" );
-
-   // COMPLETAR: práctica 2: leer archivo PLY e inicializar la malla
-   // llamar a 'calcularNormales' para el cálculo de normales
-   // ..........................
 
 }
 
@@ -110,7 +104,36 @@ unsigned Objeto3D::leerNumParametros() const
 
 void Objeto3D::modificarIndiceParametroActivo( const int d )
 {
+   const int n = leerNumParametros() ;
+
+   using namespace std ;
+
+   if ( n == 0 )
+   {  cout << "no es posible cambiar el parámetro activo, este objeto no tiene ningún parámetro definido." << endl ;
+      return ;
+   }
+   assert( 0 <= ind_par_act );
+   ind_par_act = ( ind_par_act + n + d ) % n ;
+   cout << "parámetro actual del objeto cambiado a " << (ind_par_act+1) << " / " << n << endl ;
 }
 
+
+void Objeto3D::modificarParametro( const unsigned iParam, const int delta )
+{
+   assert( iParam < leerNumParametros() );
+   initTP();
+   tiempo_par_sec[iParam] += float(delta)/10.0 ; // cada unidad es equivalente a una décima de segundo
+   actualizarEstadoParametro( iParam, tiempo_par_sec[iParam] );
+}
+
+// -----------------------------------------------------------------------------
+// igual que el anterior, pero cambia el parámetro activo (iParam --> ind_par_act)
+void Objeto3D::modificarParametro( const int delta )
+{
+   assert( 0 <= ind_par_act && ind_par_act < int(leerNumParametros()) );
+   initTP();
+   tiempo_par_sec[ind_par_act] += float(delta)/10.0 ; // cada unidad es equivalente a una décima de segundo
+   actualizarEstadoParametro( ind_par_act, tiempo_par_sec[ind_par_act] );
+}
 
 
