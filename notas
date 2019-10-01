@@ -57,11 +57,6 @@ Tupla4f Objeto3D::leerFijarColVertsCauce( ContextoVis & cv )
 }
 
 
-:
-
-
-
-
 
 // ****************************************************************************
 // Clase 'MallaPLY'
@@ -90,8 +85,6 @@ bool Objeto3D::buscarObjeto
          *objeto = this ;
       return true ;
    }
-   else
-      return false ;
 }
 
 
@@ -121,7 +114,6 @@ void Objeto3D::modificarIndiceParametroActivo( const int d )
 void Objeto3D::modificarParametro( const unsigned iParam, const int delta )
 {
    assert( iParam < leerNumParametros() );
-   initTP();
    tiempo_par_sec[iParam] += float(delta)/10.0 ; // cada unidad es equivalente a una décima de segundo
    actualizarEstadoParametro( iParam, tiempo_par_sec[iParam] );
 }
@@ -134,6 +126,49 @@ void Objeto3D::modificarParametro( const int delta )
    initTP();
    tiempo_par_sec[ind_par_act] += float(delta)/10.0 ; // cada unidad es equivalente a una décima de segundo
    actualizarEstadoParametro( ind_par_act, tiempo_par_sec[ind_par_act] );
+}
+
+
+
+void Objeto3D::actualizarEstado( const float dtSec )
+{
+   for( unsigned i = 0 ; i < leerNumParametros() ; i++  )
+   {
+      tiempo_par_sec[i] += dtSec ;
+      actualizarEstadoParametro( i, tiempo_par_sec[i] );
+   }
+}
+
+// -----------------------------------------------------------------------------
+// Pone los valores de los parámetros a cero (estado inicial)
+
+void Objeto3D::resetParametros()
+{
+   for( unsigned i = 0 ; i < leerNumParametros() ; i++  )
+   {
+      tiempo_par_sec[i] = 0.0 ;
+      actualizarEstadoParametro( i, tiempo_par_sec[i] );
+   }
+}
+
+// -----------------------------------------------------------------------------
+// la primera vez que se llama, inicializa los valores base de los
+// parámetros (a cero), las siguientes comprueba que tiempo_par_sec tiene tantas
+// entradas como parámetros.
+
+void Objeto3D::initTP()
+{
+   if ( tiempo_par_sec.size() == 0  )
+      for( unsigned i = 0 ; i < leerNumParametros() ; i++ )
+         tiempo_par_sec.push_back( 0.0 );
+}
+
+// -----------------------------------------------------------------------------
+// Destructor
+Objeto3D::~Objeto3D()
+{
+   using namespace std ;
+   cout << "destruyendo objeto3D de nombre: " << nombre_obj << endl << flush ;
 }
 
 
