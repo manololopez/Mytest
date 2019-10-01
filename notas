@@ -8,28 +8,52 @@ Proponer trabajos antes de octubre
 
 
 
+Funciones interesantes:
 
-algo mejor que lo que tenias
 
-hello wanna do 
+need mallaind.cpp and mallaind.hpp
 
-for(int i= 0; i< notas; i++)
-  report me mother
-  yea
-  
-  
-  plssssssssssss
-   no
- heello
- 
- for int while do no ples fff
- 
- somebody one told me the wold 
- 
- wow
- 
- 
- bua chaval 
- pls delete
- 
- void mallaind:report profe
+void MallaInd::RandomVertices(){
+   srand(time(NULL));
+
+   float a,b,c;
+
+   for(int i=0; i<vertices.size(); i++){
+      a = (rand() % 256)/255.0;
+      b = (rand() % 256)/255.0;
+      c = (rand() % 256)/255.0;
+      col_ver.push_back({a,b,c});
+   }
+}
+
+
+void MallaInd::ModoAjedrez(Tupla3f color1, Tupla3f color2){
+
+   for(int i=0; i < vertices.size(); i++){
+
+      if(i%2==0)
+         col_ver.push_back(color1);
+      else
+         col_ver.push_back(color2);
+   }
+}
+
+
+
+
+
+// ****************************************************************************
+// Clase 'MallaPLY'
+
+MallaPLY::MallaPLY( const std::string & nombre_arch )
+{
+   ponerNombre( std::string("malla leída del archivo '") + nombre_arch + "'" );
+
+   // COMPLETAR: práctica 2: leer archivo PLY e inicializar la malla
+   // llamar a 'calcularNormales' para el cálculo de normales
+   // ..........................
+
+}
+
+
+
