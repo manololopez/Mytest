@@ -53,12 +53,6 @@ Tupla4f Objeto3D::leerFijarColVertsCauce( ContextoVis & cv )
       if ( ident_nodo != -1 )
          FijarColVertsIdent( *(cv.cauce_act), ident_nodo );
    }
-   else
-   {
-      // modo dibujo: fijar el color si el objeto tiene color y está activada esta funcionalidad
-      if ( /**cv.fijar_colores_objetos &&**/ tieneColor() )
-         glColor3fv( leerColor() );
-   }
 
    // devolver color previo
    return color_previo ;
@@ -82,6 +76,40 @@ MallaPLY::MallaPLY( const std::string & nombre_arch )
    // llamar a 'calcularNormales' para el cálculo de normales
    // ..........................
 
+}
+
+
+bool Objeto3D::buscarObjeto
+(
+   const int        ident_busc,
+   const Matriz4f & mmodelado,
+   Objeto3D **      objeto,
+   Tupla3f &        centro_wc
+)
+{
+   assert( 0 < ident_busc );
+
+   if ( identificador == ident_busc )
+   {
+      centro_wc = mmodelado*leerCentroOC();
+      if ( objeto != nullptr )
+         *objeto = this ;
+      return true ;
+   }
+   else
+      return false ;
+}
+
+
+unsigned Objeto3D::leerNumParametros() const
+{
+   return 0 ;
+}
+
+
+
+void Objeto3D::modificarIndiceParametroActivo( const int d )
+{
 }
 
 
